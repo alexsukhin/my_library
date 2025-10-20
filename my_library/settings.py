@@ -1,3 +1,16 @@
+import os
+import sys
+
+# Label the environment we are in.
+# This is set up for PythonAnywhere deployment and must change if the
+# deployment platform changes.
+if 'test' in sys.argv:
+    ENVIRONMENT = 'test'
+elif 'PYTHONANYWHERE_SITE' in os.environ:
+    ENVIRONMENT = 'production'
+else:
+    ENVIRONMENT = 'development'
+
 """
 Django settings for my_library project.
 
@@ -20,10 +33,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_tafogtw1&95%0&pi%8ig618u*$i9agu1ypewtqz4olzf%z*a#'
+
+if ENVIRONMENT == 'production':
+    SECRET_KEY = str(os.getenv('SECRET_KEY'))
+else:
+    SECRET_KEY = 'django-insecure-4_bkf25%soiz5q)k!v)^zo%1i(k072^#79edfnlzpp+-5o^2o^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = ENVIRONMENT == 'development'
 
 ALLOWED_HOSTS = ['alexsukhin.pythonanywhere.com', 'localhost']
 
@@ -128,3 +145,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Security settings
+if ENVIRONMENT == 'production':
+    SECURE_HSTS_SECONDS = 3600
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_PRELOAD = True
