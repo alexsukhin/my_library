@@ -1,0 +1,23 @@
+{% extends "base_page.html" %}
+
+{% block title %}
+My Library | Delete book #{{book.id}}?
+{% endblock %}
+
+{% block content %}
+<h1>Delete book #{{book.id}}?</h1>
+<p>
+	Are you sure you wish to delete the following book?
+</p>
+<p>
+	{{book.authors}}  ({{book.publication_date.year}})  "{{book.title}}"
+		{% if book.isbn %}
+			ISBN: {{ book.isbn }}
+		{% endif %}
+</p>
+<form action="{% url 'delete_book' book.id %}" method="post">
+	{% csrf_token %}
+	<button type="submit">Yes, delete</button>
+</form>
+<p><a href="/books">Return list of books without change</a></p>
+{% endblock %}

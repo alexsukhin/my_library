@@ -1,0 +1,16 @@
+{% extends "base_page.html" %}
+
+{% block title %}
+My Library | Book #{{book.id}}
+{% endblock %}
+
+{% block content %}
+<h1>Book #{{book.id}}</h1>
+<p><b>Authors</b>: {{book.authors}}</p>
+<p><b>Publication date</b>: {{book.publication_date|date:"d M Y"}}</p>
+<p><b>Title</b>: {{book.title}}</p>
+{% if book.isbn %}
+	<p><b>ISBN</b>: {{ book.isbn }}</p>
+{% endif %}
+<p><a href="{% url 'list_books' %}">Go to list of books</a>
+{% endblock %}
