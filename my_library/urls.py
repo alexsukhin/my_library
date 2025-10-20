@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 from loans import views
 
 urlpatterns = [
+    path('', views.welcome, name='root'),
     path('welcome/', views.welcome, name='welcome'),
     path('books/', views.list_books, name='list_books'),
     path('book/<int:book_id>', views.get_book, name='get_book'),
