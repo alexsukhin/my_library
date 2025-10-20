@@ -7,6 +7,6 @@ My Library | Update book
 {% block content %}
 <h1>Update book</h1>
 <form action="{% url 'update_book' book_id %}" method="post">
-	{% include "__book_form.html" with form=form submit_form="Update" %}
+	{% include "__book_form.html" with form=form submit_text="Update" %}
 </form>
 {% endblock %}

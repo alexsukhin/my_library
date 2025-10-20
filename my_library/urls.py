@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from loans import views
 
@@ -28,3 +30,4 @@ urlpatterns = [
     path('delete_book/<int:book_id>', views.delete_book, name='delete_book'),
     path('admin/', admin.site.urls),
 ]
+urlpatterns += static(settings.STATIC_URL)
