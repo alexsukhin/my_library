@@ -1,6 +1,7 @@
 from django.db import transaction
 from django.test import TestCase
 from django.urls import reverse
+from django.contrib import messages
 
 import datetime
 
@@ -56,6 +57,9 @@ class UpdateBookTestCase(TestCase):
 		expected_publication_date = datetime.datetime.strptime(self.form_input['publication_date'], '%Y-%m-%d').date()
 		self.assertEqual(expected_publication_date, book.publication_date)
 		self.assertEqual(self.form_input['isbn'], book.isbn)
+		message_list = list(messages.get_messages(response.wsgi_request))
+		self.assertEqual(len(message_list), 1)
+		self.assertEqual(message_list[0].level, messages.INFO)
 
 	def test_post_with_invalid_pk(self):
 		invalid_url = reverse('update_book', kwargs={'book_id': INVALID_BOOK_ID})

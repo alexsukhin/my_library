@@ -1,6 +1,8 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
+from django.core.paginator import Paginator
+from django.contrib import messages
 import random
 
 from loans.models import Book
@@ -15,12 +17,18 @@ SLOGAN_LIST = [
 	"Get a better read on the world.",
 ]
 
+ITEMS_PER_PAGE = 25
+
 def welcome(request):
 	context = {'slogan': random.choice(SLOGAN_LIST)}
 	return render(request, 'welcome.html', context)
 
 def list_books(request):
-	context = {'books': Book.objects.all()}
+	book_list = Book.objects.all().order_by('id')
+	paginator = Paginator(book_list, ITEMS_PER_PAGE)
+	page_number = request.GET.get("page")
+	page_object = paginator.get_page(page_number)
+	context = {'page_object': page_object}
 	return render(request, 'books.html', context)
 
 def get_book(request, book_id):
@@ -56,10 +64,11 @@ def update_book(request, book_id):
 		form = BookForm(request.POST, instance=book)
 		if form.is_valid():
 			try:
-				form.save()
+				book = form.save()
 			except:
 				form.add_error(None, "It was not possible to save this book to the database.  Check the ISBN number.")
 			else:
+				messages.info(request, f"Updated book record to: {book}")
 				path = reverse('list_books')
 				return HttpResponseRedirect(path)
 	else:

@@ -6,6 +6,7 @@ My Library | Books
 
 {% block content %}
 <h1>Books</h1>
+{% include "__pagination_navbar.html" with page_object=page_object %}
 <table class="table table-striped table-hover">
 	<thead>
 		<tr>
@@ -15,7 +16,7 @@ My Library | Books
 		</tr>
 	</thead>
 	<tbody>
-		{% for book in books %}
+		{% for book in page_object %}
 		<tr>
 			<td>{{book.id}}</td>
 			<td>
@@ -39,4 +40,5 @@ My Library | Books
 		{% endfor %}
 	</tbody>
 </table>
+{% include "__pagination_navbar.html" with page_object=page_object %}
 {% endblock %}
